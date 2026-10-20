@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>編輯回憶文字</title>
+  <link rel="stylesheet" href="./editor.css">
+  <script src="./story-content.js" defer></script>
+  <script src="./editor.js" defer></script>
+</head>
+<body>
+<main>
+  <header><h1>把回憶，寫成自己的話。</h1><a href="./game.html">回到遊戲</a></header>
+  <p>選一個物件，輸入名稱、標題與文字。<strong>空一行就會分成下一頁</strong>；一般換行留在同一頁。</p>
+  <p class="notice">修改會暫存在這個瀏覽器。要更新網站，請下載 <strong>story-content.js</strong>，替換網站資料夾內的同名檔案，再重新整理或上傳 GitHub。這個頁面不會直接修改線上網站。</p>
+  <div class="toolbar"><button id="download" type="button">下載文字檔</button><button id="backup" type="button">下載草稿備份</button><label class="import">匯入草稿備份<input type="file" id="import" accept=".json,application/json"></label></div>
+  <p id="save-state" role="status"></p>
+  <div class="layout">
+    <section class="fields" aria-label="編輯物件">
+      <label for="item">想編輯哪個物件？</label><select id="item"></select>
+      <label for="label">場景中顯示的名稱</label><input id="label" maxlength="40">
+      <label for="title">對話標題</label><input id="title" maxlength="120">
+      <label for="body">互動文字</label><textarea id="body" rows="15" maxlength="30000" placeholder="在這裡寫下你想說的話。&#10;&#10;空一行，下一段就會出現在下一頁。"></textarea>
+      <p class="hint">信可以留白。其他物件若留白，會顯示「這段回憶還沒寫好。」。</p>
+    </section>
+    <section class="preview" aria-label="對話預覽"><p class="caption">遊戲中的閱讀效果</p><h2 id="preview-title"></h2><p id="preview-body"></p><div class="pages"><button id="previous" type="button">上一頁</button><span id="page-count"></span><button id="next" type="button">下一頁</button></div></section>
+  </div>
+</main>
+</body>
+</html>

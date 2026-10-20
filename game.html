@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#f8f2e8">
+  <title>和小貓散個步 · 給姐姐</title>
+  <link rel="stylesheet" href="./game.css">
+  <script src="./story-content.js" defer></script>
+  <script src="./letter.js" defer></script>
+  <script src="./game-world.js" defer></script>
+  <script src="./game.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header><a href="./index.html">← 回到繪本</a><span>和小貓散個步</span><button id="music" type="button" aria-pressed="false">♫ 音樂：關</button></header>
+  <main>
+    <div class="intro"><div><p class="eyebrow">kiro 的小小散步日記</p><h1>姐姐，今天想去哪裡？</h1></div><p>胖胖熊會跟著妳。<br>沒有任務，也不用走完所有地方。</p></div>
+    <nav class="places" aria-label="選擇散步地點">
+      <button type="button" data-scene="home" aria-pressed="true">⌂ 小貓的家</button>
+      <button type="button" data-scene="walk" aria-pressed="false">☾ 車站旁的小路</button>
+      <button type="button" data-scene="park" aria-pressed="false">♧ 初次見面的小路</button>
+    </nav>
+    <div class="game-frame">
+      <div class="scene-caption"><span id="place-name">小貓的家</span><span id="place-mood">陽光、小毯子，還有兩隻貓。</span></div>
+      <div id="stage" tabindex="0" role="region" aria-label="探索場景。方向鍵或 WASD 移動，空白鍵互動，也可以點擊場景中的物件。" aria-describedby="instructions">
+        <canvas id="world" aria-hidden="true"></canvas>
+        <div id="objects"></div>
+        <span class="cat-tag" id="kiro-tag" aria-hidden="true">kiro</span>
+        <span class="cat-tag" id="kirin-tag" aria-hidden="true">胖胖熊</span>
+      </div>
+      <div class="controls">
+        <div id="joystick" role="group" aria-label="拖曳方向桿移動 kiro"><span class="axis">＋</span><span id="stick"></span></div>
+        <div class="control-copy"><p id="nearby" role="status">靠近小物件，發現一段日常。</p><small id="instructions">方向鍵 / WASD 移動 · 空白鍵互動<br>也可以拖曳方向桿，或點選場景中的物件。</small></div>
+        <button id="interact" type="button" disabled>靠近看看</button>
+      </div>
+    </div>
+    <div class="below"><button id="pet" type="button">♡ 摸摸胖胖熊</button><a href="./index.html#letter">直接讀完整的信</a><button id="help" type="button">怎麼玩？</button></div>
+    <p class="gentle">想停下來就停下來，這裡沒有需要交出的答案。</p>
+  </main>
+  <dialog id="story" aria-labelledby="story-title" aria-describedby="story-text">
+    <div class="dialog-top"><span id="story-place"></span><button id="close-story" type="button" aria-label="關閉對話">×</button></div>
+    <h2 id="story-title"></h2><p id="story-text"></p>
+    <div class="dialog-bottom"><span id="story-page"></span><button id="next-story" type="button">繼續讀</button></div>
+  </dialog>
+  <p id="audio-status" role="status"></p>
+</body>
+</html>
