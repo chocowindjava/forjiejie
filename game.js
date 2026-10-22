@@ -1,14 +1,27 @@
 "use strict";
+const catPhotos = {
+  kiro: [
+    { src: "./photos/媒體 (30).jpg", alt: "kiro 窩在臂彎裡睡覺，露出粉紅色肉球" },
+    { src: "./photos/媒體 (26).jpg", alt: "kiro 蜷在黑色衣服上睡覺" },
+    { src: "./photos/媒體 (10).jpg", alt: "kiro 在枕頭上縮成一小團" }
+  ],
+  Kirin: [
+    { src: "./photos/媒體.jpg", alt: "胖胖熊躺在透明貓窩裡，伸出小腳" },
+    { src: "./photos/媒體 (9).jpg", alt: "胖胖熊靠在人的腿邊休息" },
+    { src: "./photos/媒體 (16).jpg", alt: "胖胖熊和 kiro 並排坐在床上" },
+    { src: "./photos/媒體 (11).jpg", alt: "胖胖熊被摸摸頭，舒服地瞇起眼睛" }
+  ]
+};
 const scenes = {
   home: {
     name: "小貓的家", mood: "陽光、小毯子，還有兩隻貓。", start: { x: 480, y: 365 },
     obstacles: [{ x: 70, y: 130, w: 205, h: 150 }, { x: 675, y: 120, w: 190, h: 95 }, { x: 682, y: 367, w: 150, h: 90 }],
     items: [
-      { x: 180, y: 320, icon: "bed", ...storyContent["home.bed"] },
+      { x: 180, y: 320, icon: "bed", ...storyContent["home.bed"], photos: catPhotos.kiro },
       { x: 770, y: 267, icon: "letter", ...storyContent["home.letter"], lines: letterLines },
       { x: 585, y: 175, icon: "star", ...storyContent["home.star"] },
       { x: 758, y: 505, icon: "care", ...storyContent["home.care"] },
-      { x: 135, y: 490, icon: "bowl", ...storyContent["home.bowl"] },
+      { x: 135, y: 490, icon: "bowl", ...storyContent["home.bowl"], photos: catPhotos.Kirin },
     ]
   },
   park: {
@@ -45,6 +58,26 @@ let follower = { x: 420, y: 398 }, trail = [{ ...follower }, { ...player }];
 let axis = { x: 0, y: 0 }, pointerId = null, nearby = null, target = null;
 let view = { scale: 1, x: 0, y: 0, w: 960, h: 600 };
 let activeStory, page = 0, returnFocus, lastTime = 0, walking = false, facing = 1;
+let photoIndex = 0;
+const photoPanel = document.getElementById("story-photos");
+const storyPhoto = document.getElementById("story-photo");
+function showPhoto() {
+  const photos = activeStory.photos || [];
+  photoPanel.hidden = !photos.length;
+  if (!photos.length) { storyPhoto.src = ""; storyPhoto.alt = ""; return; }
+  const photo = photos[photoIndex];
+  storyPhoto.src = photo.src;
+  storyPhoto.alt = photo.alt;
+  document.getElementById("photo-count").textContent = `${photoIndex + 1} / ${photos.length}`;
+}
+for (const [id, step] of [["previous-photo", -1], ["next-photo", 1]]) {
+  document.getElementById(id).addEventListener("click", () => {
+    const count = activeStory?.photos?.length || 0;
+    if (!count) return;
+    photoIndex = (photoIndex + step + count) % count;
+    showPhoto();
+  });
+}
 
 function clearInput() {
   keys.clear(); axis = { x: 0, y: 0 }; target = null;
@@ -57,6 +90,8 @@ function openStory(item) {
   activeStory = { ...item, lines: item.lines.length ? item.lines : ["這段回憶還沒寫好。"] }; page = 0;
   document.getElementById("story-place").textContent = scene.name;
   document.getElementById("story-title").textContent = item.title;
+  photoIndex = 0;
+  showPhoto();
   showPage();
   dialog.showModal();
   document.getElementById("next-story").focus();
@@ -72,7 +107,7 @@ document.getElementById("next-story").addEventListener("click", () => {
 document.getElementById("close-story").addEventListener("click", () => dialog.close());
 dialog.addEventListener("close", () => { clearInput(); if (returnFocus?.isConnected) returnFocus.focus({ preventScroll: true }); });
 interact.addEventListener("click", () => { if (nearby) openStory(nearby); });
-document.getElementById("pet").addEventListener("click", () => openStory(storyContent.pet));
+document.getElementById("pet").addEventListener("click", () => openStory({ ...storyContent.pet, photos: catPhotos.Kirin }));
 document.getElementById("pet").textContent = `♡ ${storyContent.pet.label}`;
 document.getElementById("help").addEventListener("click", () => openStory({ title: "跟著小貓，慢慢走", lines: ["電腦：方向鍵或 WASD 移動，靠近物件按空白鍵。\n手機：拖曳左下方向桿，放開就停；靠近時按右邊的互動按鈕。", "也可以直接點場景上的物件名稱，kiro 會走過去。\n上方可以自由切換地點，桌上的信從一開始就能讀。", "遇到對話，按「繼續讀」翻頁，或按右上角 ×／Escape 離開。\n沒有收集進度，也沒有必須完成的任務。"] }));
 function chooseScene(id) {

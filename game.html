@@ -41,7 +41,12 @@
   </main>
   <dialog id="story" aria-labelledby="story-title" aria-describedby="story-text">
     <div class="dialog-top"><span id="story-place"></span><button id="close-story" type="button" aria-label="關閉對話">×</button></div>
-    <h2 id="story-title"></h2><p id="story-text"></p>
+    <h2 id="story-title"></h2>
+    <figure id="story-photos" hidden>
+      <img id="story-photo" alt="" decoding="async">
+      <figcaption><button id="previous-photo" type="button" aria-label="上一張照片">←</button><span id="photo-count" aria-live="polite"></span><button id="next-photo" type="button" aria-label="下一張照片">→</button></figcaption>
+    </figure>
+    <p id="story-text"></p>
     <div class="dialog-bottom"><span id="story-page"></span><button id="next-story" type="button">繼續讀</button></div>
   </dialog>
   <p id="audio-status" role="status"></p>
